@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}von Neumann Architecture (Prinstone Architecture)}{1}{section.1}%
+\contentsline {section}{\numberline {2}Variables in C}{2}{section.2}%
+\contentsline {section}{\numberline {3}Data types in C}{2}{section.3}%
+\contentsline {section}{\numberline {4}Program Structure in C}{2}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Preprocessor Directives}{2}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Header Files}{3}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Marco Expansion}{3}{subsubsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.2}Input/Output}{3}{subsection.4.2}%
