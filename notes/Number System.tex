@@ -16,7 +16,7 @@
 \usepackage{caption}           % For customizing captions
 \usepackage{listings}          % For code listings
 \usepackage{multirow}          % For multirow tables
-
+\usepackage{longtable}
 \lstset{
   frame=tb,
   language=C,
@@ -59,38 +59,427 @@ Data representation depends on the data type.
 For example, the same binary '01000110' represents 70 as an integer, but 'F' as a character.
 The most basic unit for internal data representation is bit, which is either 0 or 1.
 A byte contains 8 bits, a nibble contains 4 bits etc.
-Multiples of bytes such as 1 byte, 2 bytes and 4 bytes are 'words', depending on the specific
+Multiples of bytes such as 1 byte, 2 bytes and 4 bytes are 'words', depending on the specific computer architecture.
+
+Since N bits can represent up to \(2^N\) values, to represent M values,
+\[\left\lceil \log_2M \right\rceil\]
+bits are required.
 % Add your introduction here.
 
-\section{Section Title}
+\section{Decimal Number System}
+A weighted-positional number system with base (or radix) 10.
+Consists of symbols = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 % Add content for this section here.
+\[(a_na_{n-1}...a_0.f_1f_2...f_m)_{10}= \]\[ (a_n \times 10^n) + (a_{n-1} \times 10^{n-1}) + ... + (a_0 \times 10^0) + (f_1 \times 10^{-1}) + (f_2 \times 10^{-2}) + ... + (f_m \times 10^{-m}) \] 
 
-\subsection{Subsection Title}
-% Add content for this subsection here.
+\section{Other Number Systems}
+In C, prefix 0 suggests octal based number, e.g. 032 represents \((32)_8\)
+Prefix 0x for hexadecimals. e.g. 0x32 represents \((32)_16\)
 
-\subsubsection{Subsubsection Title}
-% Add content for this subsubsection here.
+In QTSpim, a MIPS simulator, prefix 0x represents hexadecimals too.
+
+In Verilog, prefix 8'b represents 8-bit binary values, e.g. 8'b11110000 represents binary 11110000;
+prefix 8'h for hexadecimals, and 8'd for decimals.
+
+\section*{Base-R to Decimal Conversion}
+\[(a_na_{n-1}...a_0.f_1f_2...f_m)_{r}= \]\[ ((a_n \times r^n) + (a_{n-1} \times r^{n-1}) + ... + (a_0 \times r^0) + (f_1 \times r^{-1}) + (f_2 \times r^{-2}) + ... + (f_m \times r^{-m}))_{10} \] 
+
+\section*{Decimal to Base-R Conversion}
+\begin{itemize}
+    \item Whole numbers: repeatedly divide by R until 0;
+    \item Fractions: repeatedly multiple by R until 1;
+\end{itemize}
+For example, \((0.3125)_{10} \implies (.0101)_2\)
+\[0.3125 \times 2 = 0.625   \implies \text{Carry 0}\]
+\[0.625 \times 2 = 1.25     \implies \text{Carry 1}\]
+\[0.25 \times 2 = 0.50      \implies \text{Carry 0}\]
+\[0.5 \times 1 = 1          \implies \text{Carry 1}\]
+Startng from the most significant bit to the least.
+
+The general strategy for manual base conversion is to convert to decimals first.
 
 \begin{lstlisting}
-    // Add your code example here
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+// Function to convert a character to its corresponding integer value
+int charToValue(char c) {
+    if (isdigit(c)) return c - '0';                  // '0'-'9' -> 0-9
+    else if (isalpha(c)) return toupper(c) - 'A' + 10; // 'A'-'Z' -> 10-35
+    return -1;  // Error case: character is not valid
+}
+
+// Function to convert an integer value to its corresponding character
+char valueToChar(int value) {
+    if (value >= 0 && value <= 9) return value + '0';      // 0-9 -> '0'-'9'
+    else if (value >= 10 && value <= 35) return value - 10 + 'A'; // 10-35 -> 'A'-'Z'
+    return '?';  // Error case
+}
+
+int toDecimal(const char *input, int baseFrom) {    // ensure original input not modified
+    int res = 0;
+    int power = 1;      // initialised to baseFrom^0
+    for (int i = strlen(input) - 1; i >= 0; i--) {
+        int value = charToValue(input[i]);          // convert char representation to int value
+        if (value < 0 || value >= baseFrom) {
+            printf("Error: Invalid digit '%c' for base %d\n", input[i], baseFrom);
+            exit(1);
+        }
+        res += value * power;
+        power *= baseFrom;
+    }
+    return res;
+}
+
+void fromDecimal(int input, int baseTo, char *result) {
+    int i = 0;
+    while (input > 0) {
+        int remainder = input % baseTo;
+        result[i++] = valueToChar(remainder);
+        input /= baseTo;
+    }
+    result[i] = '\0';
+    // Reverse the result string
+    for (int j = 0; j < i / 2; j++) {
+        char temp = result[j];
+        result[j] = result[i - j - 1];
+        result[i - j - 1] = temp;
+    }
+}
+
+void integerConversion(const char *input, int baseFrom, int baseTo, char *result) {
+    if (baseFrom < 2 || baseTo < 2 || baseFrom > 36 || baseTo > 36) {
+        printf("Error: Base must be between 2 and 36.\n");
+        exit(1);
+    }
+    // Convert from the source base to decimal
+    int decimalValue = toDecimal(input, baseFrom);
+    // Convert from decimal to the target base
+    if (decimalValue == 0) {
+        result[0] = '0';
+        result[1] = '\0';
+    } else {
+        fromDecimal(decimalValue, baseTo, result);
+    }
+}
+
+int main() {
+    return 0;
+}
+
 \end{lstlisting}
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|}
-    \hline
-    Column 1 & Column 2 & Column 3 \\ \hline
-    Data 1 & Data 2 & Data 3 \\ \hline
-    % Add more rows as needed
-    \end{tabular}
-    \caption{Table caption}
-\end{table}
 
-\begin{figure}[h]
+\section{Binary to Octal/Hex Conversion Shortcut}
+
+\subsection*{Binary to Octal} 
+Partition in group of 3 since \(2^3 = 8\)
+\[(10111011001.101110)_2 = (10\ 111\ 011\ 001\ .\ 101\ 110)_2 = (2731.56)_8\]
+In reverse, represent each digit to 3 bit.
+\[(2731.56)_8 = (10\ 111\ 011\ 110\ .\ 101\ 110)_2\]
+\subsection*{Binary to hexadecimals}
+Similarly, partition in groups of 4.
+\[(5D9.B8)_{16} = (101\ 1101\ 1001\ .\ 1011\ 1000)_2\] 
+
+\section{ASCII Code}
+
+\begin{longtable}{|c|c|c|c|c|}
+    \hline
+    \textbf{Decimal} & \textbf{Hex} & \textbf{Octal} & \textbf{Symbol} & \textbf{Name} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Decimal} & \textbf{Hex} & \textbf{Octal} & \textbf{Symbol} & \textbf{Name} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+    
+    0 & 00 & 000 & NUL & Null character \\
+    1 & 01 & 001 & SOH & Start of Heading \\
+    2 & 02 & 002 & STX & Start of Text \\
+    3 & 03 & 003 & ETX & End of Text \\
+    4 & 04 & 004 & EOT & End of Transmission \\
+    5 & 05 & 005 & ENQ & Enquiry \\
+    6 & 06 & 006 & ACK & Acknowledgment \\
+    7 & 07 & 007 & BEL & Bell \\
+    8 & 08 & 010 & BS  & Backspace \\
+    9 & 09 & 011 & HT  & Horizontal Tab \\
+    10 & 0A & 012 & LF  & Line Feed \\
+    11 & 0B & 013 & VT  & Vertical Tab \\
+    12 & 0C & 014 & FF  & Form Feed \\
+    13 & 0D & 015 & CR  & Carriage Return \\
+    14 & 0E & 016 & SO  & Shift Out \\
+    15 & 0F & 017 & SI  & Shift In \\
+    16 & 10 & 020 & DLE & Data Link Escape \\
+    17 & 11 & 021 & DC1 & Device Control 1 \\
+    18 & 12 & 022 & DC2 & Device Control 2 \\
+    19 & 13 & 023 & DC3 & Device Control 3 \\
+    20 & 14 & 024 & DC4 & Device Control 4 \\
+    21 & 15 & 025 & NAK & Negative Acknowledgment \\
+    22 & 16 & 026 & SYN & Synchronous Idle \\
+    23 & 17 & 027 & ETB & End of Trans. Block \\
+    24 & 18 & 030 & CAN & Cancel \\
+    25 & 19 & 031 & EM  & End of Medium \\
+    26 & 1A & 032 & SUB & Substitute \\
+    27 & 1B & 033 & ESC & Escape \\
+    28 & 1C & 034 & FS  & File Separator \\
+    29 & 1D & 035 & GS  & Group Separator \\
+    30 & 1E & 036 & RS  & Record Separator \\
+    31 & 1F & 037 & US  & Unit Separator \\
+    32 & 20 & 040 & (space) & Space \\
+    33 & 21 & 041 & ! & Exclamation mark \\
+    34 & 22 & 042 & " & Double quote \\
+    35 & 23 & 043 & \# & Number sign \\
+    36 & 24 & 044 & \$ & Dollar sign \\
+    37 & 25 & 045 & \% & Percent sign \\
+    38 & 26 & 046 & \& & Ampersand \\
+    39 & 27 & 047 & ' & Single quote \\
+    40 & 28 & 050 & ( & Left parenthesis \\
+    41 & 29 & 051 & ) & Right parenthesis \\
+    42 & 2A & 052 & * & Asterisk \\
+    43 & 2B & 053 & + & Plus sign \\
+    44 & 2C & 054 & , & Comma \\
+    45 & 2D & 055 & - & Hyphen-minus \\
+    46 & 2E & 056 & . & Period \\
+    47 & 2F & 057 & / & Slash \\
+    48 & 30 & 060 & 0 & Digit 0 \\
+    49 & 31 & 061 & 1 & Digit 1 \\
+    50 & 32 & 062 & 2 & Digit 2 \\
+    51 & 33 & 063 & 3 & Digit 3 \\
+    52 & 34 & 064 & 4 & Digit 4 \\
+    53 & 35 & 065 & 5 & Digit 5 \\
+    54 & 36 & 066 & 6 & Digit 6 \\
+    55 & 37 & 067 & 7 & Digit 7 \\
+    56 & 38 & 070 & 8 & Digit 8 \\
+    57 & 39 & 071 & 9 & Digit 9 \\
+    58 & 3A & 072 & : & Colon \\
+    59 & 3B & 073 & ; & Semicolon \\
+    60 & 3C & 074 & < & Less-than sign \\
+    61 & 3D & 075 & = & Equals sign \\
+    62 & 3E & 076 & > & Greater-than sign \\
+    63 & 3F & 077 & ? & Question mark \\
+    64 & 40 & 100 & @ & At sign \\
+    65 & 41 & 101 & A & Uppercase A \\
+    66 & 42 & 102 & B & Uppercase B \\
+    67 & 43 & 103 & C & Uppercase C \\
+    68 & 44 & 104 & D & Uppercase D \\
+    69 & 45 & 105 & E & Uppercase E \\
+    70 & 46 & 106 & F & Uppercase F \\
+    71 & 47 & 107 & G & Uppercase G \\
+    72 & 48 & 110 & H & Uppercase H \\
+    73 & 49 & 111 & I & Uppercase I \\
+    74 & 4A & 112 & J & Uppercase J \\
+    75 & 4B & 113 & K & Uppercase K \\
+    76 & 4C & 114 & L & Uppercase L \\
+    77 & 4D & 115 & M & Uppercase M \\
+    78 & 4E & 116 & N & Uppercase N \\
+    79 & 4F & 117 & O & Uppercase O \\
+    80 & 50 & 120 & P & Uppercase P \\
+    81 & 51 & 121 & Q & Uppercase Q \\
+    82 & 52 & 122 & R & Uppercase R \\
+    83 & 53 & 123 & S & Uppercase S \\
+    84 & 54 & 124 & T & Uppercase T \\
+    85 & 55 & 125 & U & Uppercase U \\
+    86 & 56 & 126 & V & Uppercase V \\
+    87 & 57 & 127 & W & Uppercase W \\
+    88 & 58 & 130 & X & Uppercase X \\
+    89 & 59 & 131 & Y & Uppercase Y \\
+    90 & 5A & 132 & Z & Uppercase Z \\
+    91 & 5B & 133 & [ & Left square bracket \\
+    92 & 5C & 134 & \textbackslash & Backslash \\
+    93 & 5D & 135 & ] & Right square bracket \\
+    94 & 5E & 136 & \^{} & Caret \\
+    95 & 5F & 137 & \_ & Underscore \\
+    96 & 60 & 140 & ` & Grave accent \\
+    97 & 61 & 141 & a & Lowercase a \\
+    98 & 62 & 142 & b & Lowercase b \\
+    99 & 63 & 143 & c & Lowercase c \\
+    100 & 64 & 144 & d & Lowercase d \\
+    101 & 65 & 145 & e & Lowercase e \\
+    102 & 66 & 146 & f & Lowercase f \\
+    103 & 67 & 147 & g & Lowercase g \\
+    104 & 68 & 150 & h & Lowercase h \\
+    105 & 69 & 151 & i & Lowercase i \\
+    106 & 6A & 152 & j & Lowercase j \\
+    107 & 6B & 153 & k & Lowercase k \\
+    108 & 6C & 154 & l & Lowercase l \\
+    109 & 6D & 155 & m & Lowercase m \\
+    110 & 6E & 156 & n & Lowercase n \\
+    111 & 6F & 157 & o & Lowercase o \\
+    112 & 70 & 160 & p & Lowercase p \\
+    113 & 71 & 161 & q & Lowercase q \\
+    114 & 72 & 162 & r & Lowercase r \\
+    115 & 73 & 163 & s & Lowercase s \\
+    116 & 74 & 164 & t & Lowercase t \\
+    117 & 75 & 165 & u & Lowercase u \\
+    118 & 76 & 166 & v & Lowercase v \\
+    119 & 77 & 167 & w & Lowercase w \\
+    120 & 78 & 170 & x & Lowercase x \\
+    121 & 79 & 171 & y & Lowercase y \\
+    122 & 7A & 172 & z & Lowercase z \\
+    123 & 7B & 173 & \{ & Left curly brace \\
+    124 & 7C & 174 & | & Vertical bar \\
+    125 & 7D & 175 & \} & Right curly brace \\
+    126 & 7E & 176 & \~{} & Tilde \\
+    127 & 7F & 177 & DEL & Delete \\
+    \hline
+    \end{longtable}
+    
+\newpage
+    \section*{ASCII Table with MSB and LSB Headers}
+    \begin{longtable}{|c|c|c|c|c|c|c|c|c|} 
+        \hline
+        \textbf{MSBs $\backslash$ LSBs} & \textbf{000} & \textbf{001} & \textbf{010} & \textbf{011} & \textbf{100} & \textbf{101} & \textbf{110} & \textbf{111} \\
+        \hline
+        \endfirsthead
+        \hline
+        \textbf{MSBs $\backslash$ LSBs} & \textbf{000} & \textbf{001} & \textbf{010} & \textbf{011} & \textbf{100} & \textbf{101} & \textbf{110} & \textbf{111} \\
+        \hline
+        \endhead
+        \hline
+        \endfoot
+        \textbf{000} & NUL & SOH & STX & ETX & EOT & ENQ & ACK & BEL \\
+        \hline
+        \textbf{001} & BS  & HT  & LF  & VT  & FF  & CR  & SO  & SI  \\
+        \hline
+        \textbf{010} & DLE & DC1 & DC2 & DC3 & DC4 & NAK & SYN & ETB \\
+        \hline
+        \textbf{011} & CAN & EM  & SUB & ESC & FS  & GS  & RS  & US  \\
+        \hline
+        \textbf{100} & (space) & ! & " & \# & \$ & \% & \& & ' \\
+        \hline
+        \textbf{101} & ( & ) & * & + & , & - & . & / \\
+        \hline
+        \textbf{110} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        \hline
+        \textbf{111} & 8 & 9 & : & ; & < & = & > & ? \\
+        \hline
+        \textbf{1000} & @ & A & B & C & D & E & F & G \\
+        \hline
+        \textbf{1001} & H & I & J & K & L & M & N & O \\
+        \hline
+        \textbf{1010} & P & Q & R & S & T & U & V & W \\
+        \hline
+        \textbf{1011} & X & Y & Z & [ & \textbackslash{} & ] & \^{} & \_ \\
+        \hline
+        \textbf{1100} & ` & a & b & c & d & e & f & g \\
+        \hline
+        \textbf{1101} & h & i & j & k & l & m & n & o \\
+        \hline
+        \textbf{1110} & p & q & r & s & t & u & v & w \\
+        \hline
+        \textbf{1111} & x & y & z & \{ & | & \} & \textasciitilde & DEL \\
+        \hline
+        \end{longtable}
+
+
+\section{Signs} 
+\subsection*{Negative Numbers}
+Unsigned numbers consists of only non-negative values, while signed numbers include all values.
+There are 3 common ways to represent signed binary number: 
+\begin{itemize}
+    \item Sign-and-Magnitude
+    \item 1s Complement
+    \item 2s Complement
+\end{itemize}
+\subsection{Sign-and-Magnitude}
+0 for + and 
+1 for -.
+The first bit of an 8-bit binary number represents the sign, the remaining 7 bits for magnitude.
+\[00110100 \implies +110100_2 = +52_{10}\]
+\[10010011 \implies -10011_2 = -19_{10}\]
+
+The largest value an 8-bit binary using Sign-and-Magnitude can represent is 
+\[01111111 = +127_{10}\]
+Smallest
+\[11111111 = -127_{10}\]
+There will be 2 zero, \(0^+\) and \(0^-\)
+\[00000000 = +0_{10}\]
+\[10000000 = -0_{10}\]
+
+To negate a number, just invert the sigb bit.
+\[10000101_{sm} negate \implies 00000101_{sm}\]
+
+\subsection{1s Complement}
+Given a decimal number x which can be expressed as an n-bit binary number, its negated valye can be obtained in 1s-complement representation using:
+\[-x = 2^n -x - 1\]
+Example: With an 8-bit number 00001100 (or \(12_{10}\)), its negated value expressed in 1s-complement is:
+\[-00001100_2 = 2^8 - 12 - 1 = 243 = 11110011_{1s}\]
+
+Which is, to invert every bit in the binary representation.
+\[(14)_{10} = (00001110)_2 = (00001110)_{1s}\]
+\[-(14)_{10} = -(00001110)_2 = (11110001)_{1s}\]
+The largest value an 8-bit binary using 1s-complement can represent is 
+\[01111111 = +127_{10}\]
+Smallest
+\[10000000 = -127_{10}\]
+There will be 2 zero, \(0^+\) and \(0^-\)
+\[00000000 = +0_{10}\]
+\[11111111 = -0_{10}\]
+Range (for n bits): 
+\[[-(2^{n - 1} - 1), 2^{n - 1} - 1]\]
+The most significant bit still represents the sign: 
+0 for + and 
+1 for -
+
+\subsection{2s Complement}
+Given a decimal number x which can be expressed as an n-bit binary number, its negated valye can be obtained in 2s-complement representation using:
+\[-x = 2^n -x\]
+
+Example: With an 8-bit number 00001100 (or \(12_{10}\)), its negated value expressed in 2s-complement is:
+\[-00001100_2 = 2^8 - 12 = 244 = 11110100_{2s}\]
+Which is, to invert every bit in the binary representation, then + 1.
+The largest value an 8-bit binary using 1s-complement can represent is 
+\[01111111 = +127_{10}\]
+Smallest
+\[10000000 = -128_{10}\]
+Zero
+\[00000000 = +0_{10}\]
+Range (for n bits): 
+\[[-2^{n - 1}, 2^{n - 1} - 1]\]
+\newpage
+\subsection*{4-bit system Comparision}
+\begin{table}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{example-image} % Replace with your image file name
-    \caption{This is a sample caption.}
-    \label{fig:example}
-\end{figure}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Value} & \textbf{Sign-and-Magnitude} & \textbf{1's Comp.} & \textbf{2's Comp.} \\
+    \hline
+    +7 & 0111 & 0111 & 0111 \\
+    +6 & 0110 & 0110 & 0110 \\
+    +5 & 0101 & 0101 & 0101 \\
+    +4 & 0100 & 0100 & 0100 \\
+    +3 & 0011 & 0011 & 0011 \\
+    +2 & 0010 & 0010 & 0010 \\
+    +1 & 0001 & 0001 & 0001 \\
+    +0 & 0000 & 0000 & 0000 \\
+    \hline
+    \end{tabular}
+    \caption{Comparison of Binary Representations}
+    \end{table}
+    
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Value} & \textbf{Sign-and-Magnitude} & \textbf{1's Comp.} & \textbf{2's Comp.} \\
+    \hline
+    -0 & 1000 & 1111 & - \\
+    -1 & 1001 & 1110 & 1111 \\
+    -2 & 1010 & 1101 & 1110 \\
+    -3 & 1011 & 1100 & 1101 \\
+    -4 & 1100 & 1011 & 1100 \\
+    -5 & 1101 & 1010 & 1011 \\
+    -6 & 1110 & 1001 & 1010 \\
+    -7 & 1111 & 1000 & 1001 \\
+    -8 & -    & -    & 1000 \\
+    \hline
+    \end{tabular}
+    \caption{Binary Representations of Negative Values in Different Formats}
+    \end{table}
+
 
 \end{document}

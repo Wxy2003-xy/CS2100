@@ -1,4 +1,9 @@
 \contentsline {section}{\numberline {1}Data Representation}{1}{section.1}%
-\contentsline {section}{\numberline {2}Section Title}{1}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Subsection Title}{1}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Subsubsection Title}{1}{subsubsection.2.1.1}%
+\contentsline {section}{\numberline {2}Decimal Number System}{2}{section.2}%
+\contentsline {section}{\numberline {3}Other Number Systems}{2}{section.3}%
+\contentsline {section}{\numberline {4}Binary to Octal/Hex Conversion Shortcut}{4}{section.4}%
+\contentsline {section}{\numberline {5}ASCII Code}{4}{section.5}%
+\contentsline {section}{\numberline {6}Signs}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Sign-and-Magnitude}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}1s Complement}{9}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}2s Complement}{10}{subsection.6.3}%
