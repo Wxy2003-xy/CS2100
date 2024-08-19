@@ -7,3 +7,5 @@
 \contentsline {subsection}{\numberline {6.1}Sign-and-Magnitude}{8}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}1s Complement}{9}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}2s Complement}{10}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Addtion and subtraction}{12}{section.7}%
+\contentsline {section}{\numberline {8}Real Number Representation}{12}{section.8}%

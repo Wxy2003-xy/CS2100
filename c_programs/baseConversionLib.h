@@ -64,4 +64,16 @@ void integerConversion(const char *input, int baseFrom, int baseTo, char *result
         fromDecimal(decimalValue, baseTo, result);
     }
 }
+
+// void complement2sNegate(const char *input, int baseFrom) {
+//     const char *result;
+//     integerConversion(*input, baseFrom, 2, &result);
+// }
+
+// void complement1sNegate(const char *input, int baseFrom) {
+//     const char *result;
+//     integerConversion(*input, baseFrom, 2, &result);
+// }
+
+
 #endif

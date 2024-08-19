@@ -479,7 +479,98 @@ Range (for n bits):
     \hline
     \end{tabular}
     \caption{Binary Representations of Negative Values in Different Formats}
-    \end{table}
+\end{table}
+\subsection*{Excess-n representation}
+Translate all bit representation by n to evenly distribute positive and negative numbers.
+Example: Excess-4 representaton on 3-bit numbers:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Ex-4 Representation} & \textbf{Signed values} \\
+    \hline
+    000 & -4 \\
+    001 & -3 \\
+    010 & -2 \\
+    011 & -1 \\
+    100 & 0 \\
+    101 & 1 \\
+    110 & 2 \\
+    111 & 3 \\
+    \hline
+    \end{tabular}
+    \caption{Excess-4 representaton on 3-bit numbers}
+\end{table}
+
+As the table shown, original binary representation from 0 to 7 is mapped to signed integer representations from -4 ro 3 by a translation of 4. Thus called Excess-4 representation.
 
 
+
+\section{Addtion and subtraction}
+\subsection*{2s Complement on Additon and subtraction}
+Algorithm for Addition of integers A and B:
+\begin{enumerate}
+    \item Perform binary addition on the two numbers;
+    \item Ignore carry out of the most significant bit;
+    \item Check for overflow, when the carry in and carry out of the most significant bit are different. This may only happen when A and B are of the same sign.
+\end{enumerate}
+A - B = A + (-B)
+
+\subsection*{Overflow}
+Due to the fixed range of signed numbers, overflow may happen when addition or subtraction result goes beyond the range.
+This can be easily detected when the sign of the result is different from both A and B.
+
+Example: 4-bit 2s-complement system has range of \(-8_{10} to 7_{10}\)
+\[0101_{2s} + 0110_{2s} = 1011_{2s}\]
+\[5_{10} + 6_{10} = -5_{10}\]
+
+By comparing the sign bit it's easy to tell.
+
+\subsection*{1s Complement on Addition/Subtraction}
+Algorithm: 
+\begin{enumerate}
+    \item Perform binary additon on A and B;
+    \item If there is a carry out of the MSB, add 1 to the result.
+    \item Check for overflow.
+\end{enumerate}    
+
+\section{Real Number Representation}
+Computer hardwares only have finite number of bit, therefore precision in represention fractions has a certain limit.
+There are 2 common ways to represent real numbers, fixed-point representation and IEEE 754 Floating-Point Representation.
+
+\subsection*{Fixed-point representation}
+In fixed-point representation, fixed numbers of bits are allocated for the integer and fraction parts. This leads to a fixed level of precision.
+\[011010.11_{2s} = 26.75_{10}\]
+\[111110.11_{2s} = -000001.01_{2} = -1.25_{10}\]
+If only 2 bits are allocated for fraction, the smallest unit this scheme can represent will be \(2^{-2}\) or 0.25.
+
+\subsection*{IEEE 754 Floating-Point Representation}
+This scheme uses scientific number expression that allows for the representation of very large or very small number, with variable precision.
+Such number representation consists of 3 components,
+\begin{enumerate}
+    \item 1 bit representing sign
+    \item 8 bits representing exponent in excess-127 (11 bits in 64 bits, or double precision, in excess-1023)
+    \item 23 bits mantissa (52 bits in 64 bits, or double precision)
+\end{enumerate}
+
+Algorithm:
+\begin{enumerate}
+    \item Identify the sign, 0 for positive, 1 for negative on the sign bit.
+    \item Normalise the binary representation with an implicit leading bit 1.
+    \item Store the fraction part of normalised representation in mantissa, starting from the most significant bit and fill the remaining of the 23 bits with 0.
+    \item Store the exponent on 2 from the normalised expression, in excess-127.
+\end{enumerate}
+
+Examples:
+\[-6.5_{10} = -110.1_{2} = -1.101_2 \times 2^2\]
+\[\text{Sign bit} = 1\]
+\[\text{Exponent} = 2 + 127 = 129_{10} = 10000001_2\]
+\[\text{Mantissa} = 101 0000 0000 0000 0000 0000\]
+\[\implies -6.5_{10} = 1 10000001 10100000000000000000000_{2} = C0D00000_{16}\]
+
+
+\[0xC3380000_{16} = 1100 0011 0011 1000 0000 0000 0000 0000_{2}\]
+\[\implies 1 10000110 01110000000000000000000\]
+\[\implies -1.0111_{2} \times 2^{10000110_{2}} = -1.0111_{2} \times 2^{7}\]
+\[\implies -10111000_2 = -184\]
 \end{document}

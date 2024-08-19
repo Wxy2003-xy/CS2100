@@ -183,14 +183,116 @@ printf(format string, print list);
     \caption{Escape sequences}
 \end{table}
 
+\section{Pointers}
+\subsection{Pointers}
+Pointers allow for the direct manipulation of memory contents, as well as bitwise operations by bit manipulation operators.
+A variable contains a name, data type and an address, which is a number that indicate the physical location of the variable in the memory.
+The address of a variable can be accessed by '\&';
+\begin{lstlisting}
+    int a = 123;
+    printf("a = %d\n", a);      // a = 123
+    printf("&a = %p\n", &a);    // &a = ffbff7dc
+\end{lstlisting}
+
+\subsection{Declare a Pointer}
+Syntax:
+\begin{lstlisting}
+    //type *pointer_name
+    int *a_ptr;
+\end{lstlisting}
+\subsection{Assign Value to a Pointer}
+Since a pointer contains an address, only an address may be assigned to pointer, which is a hexadecimal number indicating the location of a variable.
+\begin{lstlisting}
+    int a  = 123;       // declare a variable
+    int *a_ptr;         // declare a pointer points to int
+    a_ptr = &a;         // assign the address of a to the pointer declared in line above
+\end{lstlisting}
+
+\subsection{Accessing Variable through Pointer}
+Using dereference operator '*'
+\begin{lstlisting}
+    int a = 123;
+    printf("a = %d\n", *a_ptr);     // 123
+    printf("a = %d\n", a);          // 123
+    // equivalent 
+    *a_ptr = 456;                   // rewrite variable ptr points To
+    printf("a = %d\n", a);          // 456, value modified through referencing from the pointer
+\end{lstlisting}
+\[*a_ptr \cong a\]
+
+Example:
+\begin{lstlisting}
+    int i = 10, j = 20;
+    int *p;
+    p = &i;
+    printf("i = %d\n", *p);     // i = 10
+    *p = *p + 2;
+    printf("i = %d\n", *p);     // i = 12
     
+    p = &j;
+    printf("j = %d\n", *p);     // j = 20
+    *p = i;
+    printf("j = %d\n", *p);     // j = 12
+\end{lstlisting}
 
+Example:
+\begin{lstlisting}
+    #include<stdio.h>
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{example-image} % Replace with your image file name
-    \caption{This is a sample caption.}
-    \label{fig:example}
-\end{figure}
+    int main() {
+        double a, *b;            // a is a double; *b is a pointer to a double variable
+        b = &a;
+        *b = 12.34;
+        printf("a = %f\n", a);   // a = 12.34
+        printf("a = %f\n", *b);  // a = 12.34
+
+        printf("a = %f\n", b);   // Compilation warning, b is a pointer
+        printf("a = %f\n", a);   // Compilation error, 
+                                 //cannot dereference from a double (segmentation fault)
+    }
+\end{lstlisting}
+
+\subsection{Tracing Pointers}
+\begin{lstlisting}
+    int a = 8, b = 15, c = 23;
+    int *p1, *p2, *p3;
+    p1 = &b;        // make p1 points to b, which is 15;
+    p2 = &c;        // make p2 points to c, which is 23;
+    p3 = p2;        // make p3 points to the same thing as p2, which is c;
+    printf("1: %d %d %d\n", *p1, *p2, *p3);     // 1: 15 23 23;
+    
+    *p1 *= a;       // multiply the variable pointed by p1 by a; b => b * a = 90;
+    while (*p2 > 0) {       // p2 points to c, 
+                            // *p2 is dereferenced to be the value of c: 23;
+        *p2 -= a;           // in each loop iteration, decrement the c by a;
+        (*p1)++;            // and increment the value that p1 points to by 1;
+    }
+    printf("2: %d %d %d\n", *p1, *p2, *p3);     // 2: 123 -1 -1
+    printf("3: %d %d %d\n", a, b, c);           // 3: 8 123 -1
+
+\end{lstlisting}
+\subsection{Incrementing a Pointer}
+The value of pointers can also be directly manipulated to locate neigbhouring memory locations.
+\begin{lstlisting}
+    int a; float b; char c; double d;
+    int *ap; float *bp; char *cp; double *dp;
+    // int takes 4 bytes
+    // float takes 4 bytes
+    // char takes 1 byte;
+    // double takes 8 bytes;
+    ap = &a; bp = &b; cp = &c; dp = &d;
+    printf("%p %p %p %p\n", ap, bp, cp, dp); 
+    // ffbff0a4 ffbff0a0 ffbff09f ffbff090
+    ap++; bp++; cp++; dp++;
+    printf("%p %p %p %p\n", ap, bp, cp, dp);
+    // ffbff0a8 ffbff0a4 ffbff0a0 ffbff098  each pointer increment by size of respective type.
+    ap += 3;
+    printf("%p\n", ap);
+    // ffbff0b4     incremented by 12 bytes which is the size of 3 int
+\end{lstlisting}
+\subsection{Pointers}
+\subsection{Pointers}
+\subsection{Pointers}
+
 
 \end{document}

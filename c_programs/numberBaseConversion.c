@@ -66,6 +66,5 @@ void integerConversion(const char *input, int baseFrom, int baseTo, char *result
 }
 
 int main() {
-
     return 0;
 }
