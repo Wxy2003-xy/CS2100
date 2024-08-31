@@ -73,7 +73,15 @@ Variables can be initialised at declaration, otherwise would hold an unkonw valu
 
 Variables in C MUST be declared BEFORE usage.
 Initialisation may be redundant at times. When initialsation is required but not done so warning will be given by the compiler.
+\subsection*{Declaration vs Definition}
+\begin{itemize}
+    \item Separate compilation: 
+    \item \(extern\) keyword
+\end{itemize}
 
+\subsubsection*{Separate compilation and definition}
+if variable is defined in both file1.c and file2.c, which will be separately compiled to file1.o and file2.o
+if definition duplication cannot be resolved by checking the scopes, the linker would not be able to join the compiled files and no executable can be generated.
 \section {Data types in C}
 C is a stringly typed language, which means data must has data type specified.
 Type casting in C is allowed, for example:
@@ -96,6 +104,10 @@ A C program has 4 main parts:
 Compile C program files using command
 \begin{lstlisting}
     gcc programFileExample.c -o programFileExample
+    cc programFileExample.c -E -o programFileExample.pp 
+    // to stop at preprocessor directory
+    cc programFileExample.c -S -o programFileExample.s
+    // compile into assembly
 \end{lstlisting}
 programFileExample will be compiled to binary code in file programFileExample.
 Without specifying the output file, the code will be compiled by default into a.out.
@@ -290,9 +302,27 @@ The value of pointers can also be directly manipulated to locate neigbhouring me
     printf("%p\n", ap);
     // ffbff0b4     incremented by 12 bytes which is the size of 3 int
 \end{lstlisting}
-\subsection{Pointers}
-\subsection{Pointers}
-\subsection{Pointers}
+\subsection{Pointer to Pointer}
+When declaring a pointer to a type, e.g. int *p, the pointer will also be stored in a physical address. Of which another pointer can point to, e.g. int **q = \&p;
+\begin{lstlisting}
+    int main(){
+    int *p; // Pointer to an int
+    int **q; // Pointer to a pointer to an int.
+    int x=5, y = 6;
+    printf("%p, %p, %d, %d\n", p, q, x, y);     
+    printf("%p, %p, %d, %d\n", &x, &y, x, y);
+    
+    p = &x;
+    q = &p;
+    p++;
+    (*p)--;  
+    (**q)++;   
+
+    printf("%p, %p, %d, %d\n", p, q, x, y);
+    return 0;
+    }
+\end{lstlisting}
+
 
 
 \end{document}

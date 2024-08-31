@@ -183,6 +183,8 @@ In reverse, represent each digit to 3 bit.
 Similarly, partition in groups of 4.
 \[(5D9.B8)_{16} = (101\ 1101\ 1001\ .\ 1011\ 1000)_2\] 
 
+A = 1010; C = 1100; F = 1111;
+
 \section{ASCII Code}
 
 \begin{longtable}{|c|c|c|c|c|}
@@ -573,4 +575,20 @@ Examples:
 \[\implies 1 10000110 01110000000000000000000\]
 \[\implies -1.0111_{2} \times 2^{10000110_{2}} = -1.0111_{2} \times 2^{7}\]
 \[\implies -10111000_2 = -184\]
+
+\subsubsection*{Rounding}
+The most important thing you must know about floating point arithmetic is that associativity is never preserved (even when the operation is theoretically associative), i.e.
+\[(A \text{ op } B) op C \neq A \text{ op } (B \text{ op } C)\]
+Rounding destroys associativity!
+Rounding is selecting a representable number as the result.
+\[numbers \in (1.0000...000 \text{ (23 bits decimals) }, 1.000...0001 \text{ (23 bits decimals) })\]
+Cannot be represented.
+
+\section*{Examples}
+\(00110011_{1s} - 00101010_{1s} = 00110011_{1s} + (-00101010_{1s})\)
+\(= 00110011_{1s} + 11010101_{1s}\) \newline
+\(= 1 00001000\) add the carry-out 1 to the end:\newline
+\(= 00001001_{1s}\)
+
+
 \end{document}
