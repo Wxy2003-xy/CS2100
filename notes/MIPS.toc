@@ -1,21 +1,40 @@
 \contentsline {section}{\numberline {1}Instruction Set Architecture}{2}{section.1}%
-\contentsline {section}{\numberline {2}Machine Code vs Assembly Language}{3}{section.2}%
-\contentsline {section}{\numberline {3}Walkthrough}{3}{section.3}%
+\contentsline {section}{\numberline {2}Machine Code vs Assembly Language}{2}{section.2}%
+\contentsline {section}{\numberline {3}Walkthrough}{2}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Memory Instruction}{2}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Reg-to-Reg Arithmetic, and other calculation instructions}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Control flow instructions}{3}{subsection.3.3}%
 \contentsline {section}{\numberline {4}General Purpose Register}{3}{section.4}%
-\contentsline {section}{\numberline {5}MIPS Assembly Language}{3}{section.5}%
-\contentsline {subsection}{\numberline {5.1}General Instruction Syntax}{3}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Arithmetic Operation: Addition}{3}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Arithmetic Operation: Subtraction}{3}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Complex Expressions}{3}{subsection.5.4}%
-\contentsline {subsection}{\numberline {5.5}Constant/Immediate Operand}{3}{subsection.5.5}%
-\contentsline {subsection}{\numberline {5.6}Register Zero (\$0 or \$zero)}{3}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}Logical Operation: Overview}{3}{subsection.5.7}%
-\contentsline {subsection}{\numberline {5.8}Logical Operation: Shifting}{3}{subsection.5.8}%
-\contentsline {subsection}{\numberline {5.9}Logical Operation: Bitwise AND}{3}{subsection.5.9}%
-\contentsline {subsection}{\numberline {5.10}Logical Operation: Bitwise OR}{3}{subsection.5.10}%
-\contentsline {subsection}{\numberline {5.11}Logical Operation: Bitwise NOR}{3}{subsection.5.11}%
-\contentsline {subsection}{\numberline {5.12}Logical Operation: Bitwise XOR}{3}{subsection.5.12}%
-\contentsline {section}{\numberline {6}Large Constant: Case study}{3}{section.6}%
-\contentsline {section}{\numberline {7}MIPS Basic Instruction Checklist}{3}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Subsection Title}{3}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Subsubsection Title}{3}{subsubsection.7.1.1}%
+\contentsline {section}{\numberline {5}MIPS Assembly Language}{4}{section.5}%
+\contentsline {subsection}{\numberline {5.1}General Instruction Syntax}{4}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Arithmetic Operation: Addition}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Arithmetic Operation: Subtraction}{5}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Complex Expressions}{5}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Constant/Immediate Operand}{5}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Register Zero (\$0 or \$zero)}{5}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Logical Operation: Overview}{5}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Logical Operation: Shifting}{5}{subsection.5.8}%
+\contentsline {subsection}{\numberline {5.9}Logical Operation: Bitwise AND}{5}{subsection.5.9}%
+\contentsline {subsection}{\numberline {5.10}Logical Operation: Bitwise OR}{5}{subsection.5.10}%
+\contentsline {subsection}{\numberline {5.11}Logical Operation: Bitwise NOR}{5}{subsection.5.11}%
+\contentsline {subsection}{\numberline {5.12}Logical Operation: Bitwise XOR}{5}{subsection.5.12}%
+\contentsline {section}{\numberline {6}Large Constant: Case study}{5}{section.6}%
+\contentsline {section}{\numberline {7}MIPS Basic Instruction Checklist}{5}{section.7}%
+\contentsline {section}{\numberline {8}The Processor - Datapath}{7}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Datapath and Control}{7}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}MIPS Processor implementation}{8}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Arithmatic and Logical operations}{8}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}Data transfer instructions}{8}{subsubsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.3}Branches}{8}{subsubsection.8.2.3}%
+\contentsline {subsection}{\numberline {8.3}Instruction Execution Cycle}{8}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Fetch stage}{8}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Decode stage}{8}{subsubsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.3}Operand fetch stage}{8}{subsubsection.8.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.4}Execute stage}{9}{subsubsection.8.3.4}%
+\contentsline {subsubsection}{\numberline {8.3.5}Register write stage}{9}{subsubsection.8.3.5}%
+\contentsline {subsection}{\numberline {8.4}Build a MIPss Processor}{10}{subsection.8.4}%
+\contentsline {subsubsection}{\numberline {8.4.1}Fetch stage}{10}{subsubsection.8.4.1}%
+\contentsline {subsubsection}{\numberline {8.4.2}Decode stage}{10}{subsubsection.8.4.2}%
+\contentsline {subsubsection}{\numberline {8.4.3}ALU stage}{10}{subsubsection.8.4.3}%
+\contentsline {subsubsection}{\numberline {8.4.4}Memory stage}{10}{subsubsection.8.4.4}%
+\contentsline {subsubsection}{\numberline {8.4.5}Register write stage}{10}{subsubsection.8.4.5}%

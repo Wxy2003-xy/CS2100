@@ -1,23 +1,24 @@
-\documentclass[12pt]{article} % 12pt font size
+\documentclass[12pt]{article} 
 
-% Packages
-\usepackage[utf8]{inputenc}    % For UTF-8 character encoding
-\usepackage[T1]{fontenc}       % For proper font encoding
-\usepackage{lmodern}           % Improved font rendering
-\usepackage{amsmath, amssymb}  % For math symbols and environments
-\usepackage{graphicx}          % For including images
-\usepackage{geometry}          % For adjusting page dimensions
-\usepackage{hyperref}          % For clickable hyperlinks in the document
-\usepackage{fancyhdr}          % For custom headers and footers
-\usepackage{parskip}           % To add space between paragraphs
-\usepackage{tikz}              % For drawing figures
-\usepackage{booktabs}          % For improved table formatting
-\usepackage{enumitem}          % For custom lists
-\usepackage{caption}           % For customizing captions
-\usepackage{listings}          % For code listings
-\usepackage{multirow}          % For multirow tables
+
+\usepackage[utf8]{inputenc}    
+\usepackage[T1]{fontenc}       
+\usepackage{lmodern}    
+\usepackage{array}       
+\usepackage{amsmath, amssymb}  
+\usepackage{graphicx}          
+\usepackage{geometry}          
+\usepackage{hyperref}          
+\usepackage{fancyhdr}          
+\usepackage{parskip}           
+\usepackage{tikz}              
+\usepackage{booktabs}          
+\usepackage{enumitem}          
+\usepackage{caption}           
+\usepackage{listings}          
+\usepackage{multirow}          
 \usepackage{amsthm}
-
+\usepackage{longtable}
 \lstset{
   frame=tb,
   language=C,
@@ -36,34 +37,115 @@
   tabsize=3
 }
 
-% Document settings
-\geometry{margin=1in} % Set all margins to 1 inch
 
-% Header and Footer customization
+\geometry{margin=1in} 
+
+
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\leftmark} % Left header contains the section name
-\fancyhead[R]{\thepage}  % Right header contains the page number
+\fancyhead[L]{\leftmark} 
+\fancyhead[R]{\thepage}  
 
 \title{MIPS}
 \author{WANG Xiyu}
 \date{\today}
-
+\theoremstyle{definition}
+\newtheorem*{remark}{Remarks}
 \begin{document}
 
 \maketitle
 
-\tableofcontents % Optional table of contents
+\tableofcontents 
 
 \section{Instruction Set Architecture}
 Instruction Set Architecture includes everything programers need to know to make the machine code work correctly, and allows computer designers to talk about functions independently from the hardware that performs them. 
 This abstraction allows many implementations of varyin cost and performance that can run identical software. Basically an API between software and hardware.
 \section{Machine Code vs Assembly Language}
 \section{Walkthrough}
-
+The major 2 components of a computer are the processor and memory(RAM), which are connected by bus, which is a data connector.
+The code and data reside in memory, which are transferred into the processor duting execution. 
+The Processor is much faster than memory access, therefore we have load-store model that limits the memory operations and relies on registers for storage during execution.
+\subsection{Memory Instruction}
+To move data from memory to registers, and the other way round later.
+\subsubsection*{Variable mapping}
+mapping of variables to registers.
+\begin{lstlisting}
+    r0 <- load i
+\end{lstlisting}
+\subsection{Reg-to-Reg Arithmetic, and other calculation instructions}
+Arithmetic opeartions are be done directly on registers only, therefore very fast.
+\subsection{Control flow instructions}
+Instructions that changes the order of sequential execution.
 \section{General Purpose Register}
+There are 32 general purpose registers in a mips processor, from number 0 to number 31, each with a name and corresponding functionality.
+
+\begin{longtable}{|p{1.5cm}|p{2cm}|p{3cm}|p{7cm}|}
+    \hline
+    \textbf{Reg. Number} & \textbf{Reg. Name} & \textbf{Alias} & \textbf{Remarks} \\ 
+    \hline
+    0  & \$zero  & constant zero & Always holds the constant value 0. Cannot be modified. \\ 
+    \hline
+    1  & \$at    & assembler temporary & Reserved for use by the assembler. Not typically used in normal code. \\ 
+    \hline
+    2-3  & \$v0-\$v1  & values for results & Used to store function return values and results of expressions. \\ 
+    \hline
+    4-7  & \$a0-\$a3  & arguments & Used to pass the first four arguments to functions. Additional arguments are passed via the stack. \\ 
+    \hline
+    8-15  & \$t0-\$t7  & temporaries & Temporary registers not preserved across function calls. Free to use within functions. \\ 
+    \hline
+    16-23 & \$s0-\$s7  & saved temporaries & Temporary registers, but values must be preserved across function calls (callee-saved). \\ 
+    \hline
+    24-25 & \$t8-\$t9  & more temporaries & Additional temporary registers, not preserved across function calls. \\ 
+    \hline
+    26-27 & \$k0-\$k1  & kernel reserved & Reserved for the operating system kernel. Do not use in user-level code. \\ 
+    \hline
+    28    & \$gp       & global pointer & Points to the middle of the global/static data segment. \\ 
+    \hline
+    29    & \$sp       & stack pointer  & Points to the top of the current stack frame. Grows downward. \\ 
+    \hline
+    30    & \$fp       & frame pointer  & Used as a frame pointer for function calls. Can also be \$s8 in some conventions. \\ 
+    \hline
+    31    & \$ra       & return address & Stores the return address for function calls. Used by the `jal` instruction. \\ 
+    \hline
+    \caption{MIPS General Purpose Registers with Remarks}
+    \end{longtable}
 \section{MIPS Assembly Language}
 \subsection{General Instruction Syntax}
+There are 3 types of MIPS instruction, R type (register), I type (immediate), and J type (jump).
+All instructions have 32 bits, which fit into 4 bytes blocks in the memory, or the capacity of one register.
+\begin{longtable}{|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{6cm}|}
+    \hline
+    \textbf{Format Type} & \textbf{Field Name} & \textbf{Field Size (bits)} & \textbf{Description} \\ 
+    \hline
+    \textbf{R-Type} & Opcode & 6 & The operation code, always `000000` for R-type instructions. \\ 
+    \cline{2-4}
+                    & rs     & 5 & The first source register. \\ 
+    \cline{2-4}
+                    & rt     & 5 & The second source register. \\ 
+    \cline{2-4}
+                    & rd     & 5 & The destination register where the result is stored. \\ 
+    \cline{2-4}
+                    & shamt  & 5 & The shift amount, used only for shift instructions. Typically zero for other instructions. \\ 
+    \cline{2-4}
+                    & funct  & 6 & Function field that determines the specific operation (e.g., add, sub). \\ 
+    \hline
+    \textbf{I-Type} & Opcode & 6 & The operation code identifying the instruction type. \\ 
+    \cline{2-4}
+                    & rs     & 5 & The source register. \\ 
+    \cline{2-4}
+                    & rt     & 5 & The destination register. \\ 
+    \cline{2-4}
+                    & Immediate & 16 & A 16-bit immediate value or address offset. \\ 
+    \hline
+    \textbf{J-Type} & Opcode & 6 & The operation code identifying the instruction type. \\ 
+    \cline{2-4}
+                    & Address & 26 & The target address for jump instructions. \\ 
+    \hline
+    \caption{R, I, and J Type Instruction Formats in MIPS}
+    \end{longtable}
+
+Notes: The order of registers in MIPS instruction lines are different from the order in the instruction format. \newline
+In 32 bits format the register order of R type instructions is rs, rt, rd; i
 \subsection{Arithmetic Operation: Addition}
 \subsection{Arithmetic Operation: Subtraction}
 \subsection{Complex Expressions}
@@ -79,37 +161,179 @@ This abstraction allows many implementations of varyin cost and performance that
 \section{MIPS Basic Instruction Checklist}
 
 
-
-
-
-% Add content for this section here.
-
-\subsection{Subsection Title}
-% Add content for this subsection here.
-
-\subsubsection{Subsubsection Title}
-% Add content for this subsubsection here.
-
-\begin{lstlisting}
-    // Add your code example here
-\end{lstlisting}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|}
+\begin{longtable}{|l|l|p{6cm}|p{6cm}|}
     \hline
-    Column 1 & Column 2 & Column 3 \\ \hline
-    Data 1 & Data 2 & Data 3 \\ \hline
-    % Add more rows as needed
-    \end{tabular}
-    \caption{Table caption}
-\end{table}
+    \textbf{Instruction} & \textbf{Format} & \textbf{Operation} & \textbf{Description} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Instruction} & \textbf{Format} & \textbf{Operation} & \textbf{Description} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+    \hline
+    \endlastfoot
+    add  & R  & \raggedright $d = s + t$ & Adds two registers and stores the result in a register. \\
+    \hline
+    addi & I  & \raggedright $t = s + imm$ & Adds a register and an immediate value and stores the result in a register. \\
+    \hline
+    sub  & R  & \raggedright $d = s - t$ & Subtracts one register from another and stores the result in a register. \\
+    \hline
+    mult & R  & \raggedright $LO = s \times t$ & Multiplies two registers and stores the result in special registers LO (low) and HI (high). \\
+    \hline
+    div  & R  & \raggedright $LO = s / t$ & Divides one register by another and stores the quotient in LO and the remainder in HI. \\
+    \hline
+    and  & R  & \raggedright $d = s \land t$ & Performs a bitwise AND of two registers and stores the result in a register. \\
+    \hline
+    andi & I  & \raggedright $t = s \land imm$ & Performs a bitwise AND of a register and an immediate value. \\
+    \hline
+    or   & R  & \raggedright $d = s \lor t$ & Performs a bitwise OR of two registers and stores the result in a register. \\
+    \hline
+    ori  & I  & \raggedright $t = s \lor imm$ & Performs a bitwise OR of a register and an immediate value. \\
+    \hline
+    xor  & R  & \raggedright $d = s \oplus t$ & Performs a bitwise XOR of two registers and stores the result in a register. \\
+    \hline
+    xori & I  & \raggedright $t = s \oplus imm$ & Performs a bitwise XOR of a register and an immediate value. \\
+    \hline
+    nor  & R  & \raggedright $d = \lnot(s \lor t)$ & Performs a bitwise NOR (NOT OR) of two registers and stores the result in a register. \\
+    \hline
+    sll  & R  & \raggedright $d = t << shamt$ & Shifts a register value left by the shift amount (shamt) and stores the result. \\
+    \hline
+    srl  & R  & \raggedright $d = t >> shamt$ & Shifts a register value right by the shift amount (shamt) and stores the result. \\
+    \hline
+    sra  & R  & \raggedright $d = t >> shamt$ (arithmetic) & Shifts a register value right by the shift amount (shamt) with sign extension. \\
+    \hline
+    slt  & R  & \raggedright $d = (s < t)$ & Sets the destination register to 1 if the first source register is less than the second; otherwise, sets it to 0. \\
+    \hline
+    slti & I  & \raggedright $t = (s < imm)$ & Sets the destination register to 1 if the source register is less than the immediate value; otherwise, sets it to 0. \\
+    \hline
+    lw   & I  & \raggedright $t = \text{Mem}[s + \text{offset}]$ & Loads a word from memory into a register. \\
+    \hline
+    sw   & I  & \raggedright $\text{Mem}[s + \text{offset}] = t$ & Stores a word from a register into memory. \\
+    \hline
+    lb   & I  & \raggedright $t = \text{Mem}[s + \text{offset}]$ & Loads a byte from memory into a register (sign-extended). \\
+    \hline
+    lbu  & I  & \raggedright $t = \text{Mem}[s + \text{offset}]$ & Loads a byte from memory into a register (zero-extended). \\
+    \hline
+    sb   & I  & \raggedright $\text{Mem}[s + \text{offset}] = t$ & Stores a byte from a register into memory. \\
+    \hline
+    lh   & I  & \raggedright $t = \text{Mem}[s + \text{offset}]$ & Loads a halfword from memory into a register (sign-extended). \\
+    \hline
+    lhu  & I  & \raggedright $t = \text{Mem}[s + \text{offset}]$ & Loads a halfword from memory into a register (zero-extended). \\
+    \hline
+    sh   & I  & \raggedright $\text{Mem}[s + \text{offset}] = t$ & Stores a halfword from a register into memory. \\
+    \hline
+    beq  & I  & \raggedright \texttt{if} $s = t$ \texttt{then} $PC = PC + 4 + (imm \times 4)$ & Branches to a label if two registers are equal. \\
+    \hline
+    bne  & I  & \raggedright \texttt{if} $s \neq t$ \texttt{then} $PC = PC + 4 + (imm \times 4)$ & Branches to a label if two registers are not equal. \\
+    \hline
+    j    & J  & \raggedright $PC = (PC \& 0xF0000000) | (\text{address} \times 4)$ & Jumps to a specified address. \\
+    \hline
+    jr   & R  & \raggedright $PC = s$ & Jumps to the address contained in a register. \\
+    \hline
+    jal  & J  & \raggedright $RA = PC + 4; PC = (PC \& 0xF0000000) | (\text{address} \times 4)$ & Jumps to a specified address and saves the return address in the link register. \\
+    \hline
+    mfhi & R  & \raggedright $d = HI$ & Moves the contents of the HI register to a general-purpose register. \\
+    \hline
+    mflo & R  & \raggedright $d = LO$ & Moves the contents of the LO register to a general-purpose register. \\
+    \hline
+    mthi & R  & \raggedright $HI = s$ & Moves the contents of a general-purpose register to the HI register. \\
+    \hline
+    mtlo & R  & \raggedright $LO = s$ & Moves the contents of a general-purpose register to the LO register. \\
+    \hline
+    nop  & R  & \raggedright No operation & Does nothing; often used for delay slots. \\
+    \hline
+\end{longtable}
+\section*{Writing MIPS instructions and MIPS to C translation}
+General strategy: 
+\begin{enumerate}
+    \item 
+\end{enumerate}
 
-\begin{figure}[h]
+
+\section{The Processor - Datapath}
+\subsection{Datapath and Control}
+Data path consists of components that process data, which performs the arithmetic, logical and memory operations.
+Control tells the datapath, memory and I/O devices what to do according to program instructions.
+\subsection{MIPS Processor implementation}
+Implement a subset of the core MIPS ISA
+\subsubsection{Arithmatic and Logical operations}
+\begin{itemize}
+    \item add
+    \item sub
+    \item and 
+    \item or 
+    \item addi
+    \item slt
+\end{itemize}
+Note: andi and ori are not supported with current processor design as we always do sign extension on immediate value.
+\subsubsection{Data transfer instructions}
+\begin{itemize}
+    \item lw 
+    \item sw 
+\end{itemize}
+\subsubsection{Branches}
+\begin{itemize}
+    \item beq
+    \item bne
+\end{itemize}
+
+\subsection{Instruction Execution Cycle}
+The execution on ONE instruction consists of 5 stages:
+\subsubsection{Fetch stage}
+\begin{itemize}
+    \item Get instruction from memory
+    \item Address is in the Program Counter Register
+\end{itemize}
+\subsubsection{Decode stage}
+\begin{itemize}
+    \item Find out the operation required
+\end{itemize}
+\subsubsection{Operand fetch stage}
+\begin{itemize}
+    \item Get operand(s) needed for operation
+\end{itemize}
+\subsubsection{Execute stage}
+\begin{itemize}
+    \item Perform required operation
+\end{itemize}
+\subsubsection{Register write stage}
+\begin{itemize}
+    \item Store the result of operation in a register
+\end{itemize}
+\subsection*{Example}
+\begin{table}[htbp]
     \centering
-    \includegraphics[width=0.5\textwidth]{example-image} % Replace with your image file name
-    \caption{This is a sample caption.}
-    \label{fig:example}
-\end{figure}
+    \begin{tabular}{|p{3cm}|p{4.5cm}|p{4.5cm}|p{4.5cm}|}
+    \hline
+    \textbf{Instruction} & \textbf{Add} (\texttt{add \$rd, \$rs, \$rt}) & \textbf{Load Word} (\texttt{lw \$rt, ofst(\$rs)}) & \textbf{Branch on Equal} (\texttt{beq \$rs, \$rt, ofst})\\
+    \hline
+    \textbf{Fetch} & Standard fetch & Standard fetch & Standard fetch \\
+    \hline
+    \textbf{Decode} & Operand fetch & Operand fetch & Operand fetch \\
+    \hline
+    \textbf{Operand Fetch} & 
+    Read [\texttt{\$rs}] as opr1 \newline
+    Read [\texttt{\$rt}] as opr2 &
+    Read [\texttt{\$rs}] as opr1 \newline
+    Use ofst as opr2 &
+    Read [\texttt{\$rs}] as opr1 \newline
+    Read [\texttt{\$rt}] as opr2 \\
+    \hline
+    \textbf{Execute} & Result = opr1 + opr2 & MemAddr = opr1 + opr2 & Taken = (opr1 == opr2)? \newline Target = (PC+4) + ofst $\times$ 4 \\
+    \hline
+    \textbf{Result Write} & Result stored in \texttt{\$rd} & Memory data stored in \texttt{\$rt} & if (Taken) \newline PC = Target \\
+    \hline
+    \end{tabular}
+    \caption{Stages of instruction execution for add, lw, and beq}
+    \end{table}
+    \newpage
+\subsection{Build a MIPss Processor}
+\subsubsection{Fetch stage}
+\subsubsection{Decode stage}
+\subsubsection{ALU stage}
+\subsubsection{Memory stage}
+\subsubsection{Register write stage}
 
 \end{document}

@@ -1,7 +1,11 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "myfunctions.h": "c"
+        "myfunctions.h": "c",
+        "cstdlib": "c",
+        "locale": "c",
+        "new": "c",
+        "ostream": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

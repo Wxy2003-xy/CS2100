@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.22)  25 AUG 2024 14:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.22)  14 SEP 2024 15:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -801,6 +801,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [10]
 
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
 (fancyhdr)                \setlength{\headheight}{14.49998pt}.
@@ -833,21 +836,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [14] (./Number System.aux)
 Package rerunfilecheck Info: File `"Number System".out' has not changed.
-(rerunfilecheck)             Checksum: EEBF9B4DA62957F4AA61631B9278852F;1600.
+(rerunfilecheck)             Checksum: E8DA36B054973FDA9E8662303C171043;1936.
  ) 
 Here is how much of TeX's memory you used:
- 25160 strings out of 476025
- 456786 string characters out of 5790016
+ 25199 strings out of 476025
+ 457290 string characters out of 5790016
  1985388 words of memory out of 5000000
- 45054 multiletter control sequences out of 15000+600000
- 568344 words of font info for 77 fonts, out of 8000000 for 9000
+ 45070 multiletter control sequences out of 15000+600000
+ 579146 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,89p,588b,2040s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on "Number System.pdf" (14 pages, 220622 bytes).
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmib10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on "Number System.pdf" (14 pages, 248797 bytes).
 PDF statistics:
- 320 PDF objects out of 1000 (max. 8388607)
- 279 compressed objects within 3 object streams
- 130 named destinations out of 1000 (max. 500000)
- 101 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 363 PDF objects out of 1000 (max. 8388607)
+ 314 compressed objects within 4 object streams
+ 146 named destinations out of 1000 (max. 500000)
+ 109 words of extra memory for PDF output out of 10000 (max. 10000000)
 
